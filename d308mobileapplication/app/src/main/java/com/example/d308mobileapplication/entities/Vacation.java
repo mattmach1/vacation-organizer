@@ -9,7 +9,7 @@ public class Vacation {
     private int vacationID;
     private String title;
     private String hotel;
-    private String startDte;
+    private String startDate;
     private String endDate;
 
     public int getVacationID() {
@@ -28,12 +28,12 @@ public class Vacation {
         this.title = title;
     }
 
-    public String getStartDte() {
-        return startDte;
+    public String getStartDate() {
+        return startDate;
     }
 
-    public void setStartDte(String startDte) {
-        this.startDte = startDte;
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 
     public String getHotel() {
@@ -52,11 +52,11 @@ public class Vacation {
         this.endDate = endDate;
     }
 
-    public Vacation(int vacationID, String title, String hotel, String startDte, String endDate) {
+    public Vacation(int vacationID, String title, String hotel, String startDate, String endDate) {
         this.vacationID = vacationID;
         this.title = title;
         this.hotel = hotel;
-        this.startDte = startDte;
+        this.startDate = startDate;
         this.endDate = endDate;
     }
 }
