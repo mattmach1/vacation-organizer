@@ -27,7 +27,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:text="title: "
+                    android:text="Title: "
                     android:layout_height="50dp"
                     android:padding="10dp"
                     android:layout_width="wrap_content"></TextView>
@@ -36,7 +36,7 @@
                     android:id="@+id/titletext"
                     android:layout_height="50dp"
                     android:layout_width="wrap_content"
-                    android:hint="excursion 1"></EditText>
+                    android:hint="title"></EditText>
             </LinearLayout>
 
             <LinearLayout
@@ -45,16 +45,16 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:text="title: "
+                    android:text="Date: "
                     android:layout_height="50dp"
                     android:padding="10dp"
                     android:layout_width="wrap_content"></TextView>
 
                 <EditText
-                    android:id="@+id/pricetext"
+                    android:id="@+id/datetext"
                     android:layout_height="50dp"
                     android:layout_width="wrap_content"
-                    android:hint="excursion 2"></EditText>
+                    android:hint="date"></EditText>
             </LinearLayout>
 
         </LinearLayout>

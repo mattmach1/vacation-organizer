@@ -1,9 +1,19 @@
 package com.example.d308mobileapplication.entities;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "excursions")
+@Entity(
+    tableName = "excursions",
+    foreignKeys = {
+    @ForeignKey(
+    entity = Vacation.class,
+    parentColumns = {"vacationID"},
+    childColumns = {"vacationID"},
+    onDelete = ForeignKey.CASCADE)
+    }
+)
 public class Excursion {
     @PrimaryKey(autoGenerate = true)
     private int excursionID;
@@ -44,5 +54,8 @@ public class Excursion {
 
     public int getVacationID() {
         return vacationID;
+    }
+    public void setVacationID(int vacationID){
+        this.vacationID = vacationID;
     }
 }

@@ -16,9 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.d308mobileapplication.R;
 import com.example.d308mobileapplication.database.Repository;
+import com.example.d308mobileapplication.entities.Excursion;
 import com.example.d308mobileapplication.entities.Vacation;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class VacationList extends AppCompatActivity {

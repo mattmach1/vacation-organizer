@@ -13,6 +13,11 @@
         android:theme="@style/Theme.D308MobileApplication"
         tools:targetApi="31">
         <activity
+            android:name=".UI.ExcursionDetails"
+            android:label="Excursion Details"
+            android:parentActivityName=".UI.VacationList"
+            android:exported="false" />
+        <activity
             android:name=".UI.VacationDetails"
             android:label="Vacation Details"
             android:parentActivityName=".UI.VacationList"

@@ -2,6 +2,7 @@ package com.example.d308mobileapplication.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,8 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.d308mobileapplication.R;
 import com.example.d308mobileapplication.database.Repository;
+import com.example.d308mobileapplication.entities.Excursion;
 import com.example.d308mobileapplication.entities.Vacation;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class VacationDetails extends AppCompatActivity {
     String name;
@@ -37,12 +42,16 @@ public class VacationDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //EdgeToEdge.enable(this);
         setContentView(R.layout.activity_vacation_details);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
         FloatingActionButton fab = findViewById(R.id.floatingActionButton2);
         editName=findViewById(R.id.titletext);
         editHotel=findViewById(R.id.hoteltext);
         editStartDate=findViewById(R.id.starttext);
         editEndDate=findViewById(R.id.endtext);
-        vacationID = getIntent().getIntExtra("id", -1);
+        vacationID = getIntent().getIntExtra("vacationID", -1);
         name = getIntent().getStringExtra("name");
         hotel = getIntent().getStringExtra("hotel");
         startDate = getIntent().getStringExtra("start date");
@@ -56,6 +65,7 @@ public class VacationDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(VacationDetails.this, ExcursionDetails.class);
+                intent.putExtra("vacationID", vacationID);
                 startActivity(intent);
             }
         });
@@ -64,7 +74,11 @@ public class VacationDetails extends AppCompatActivity {
         final ExcursionAdapter excursionAdapter = new ExcursionAdapter(this);
         recyclerView.setAdapter(excursionAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        excursionAdapter.setExcursions(repository.getAllExcursions());
+        List<Excursion> filteredExcursions = new ArrayList<>();
+        for (Excursion e : repository.getAllExcursions()) {
+            if (e.getVacationID() == vacationID) filteredExcursions.add(e);
+        }
+        excursionAdapter.setExcursions(filteredExcursions);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -72,6 +86,11 @@ public class VacationDetails extends AppCompatActivity {
         return true;
     }
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+
         if (item.getItemId() == R.id.vacationsave) {
             Vacation vacation;
             if (vacationID == -1) {
