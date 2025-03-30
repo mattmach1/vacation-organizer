@@ -34,6 +34,7 @@ public class VacationDetails extends AppCompatActivity {
     EditText editHotel;
     EditText editStartDate;
     EditText editEndDate;
+    ExcursionAdapter excursionAdapter;
 
     Repository repository;
 
@@ -47,10 +48,10 @@ public class VacationDetails extends AppCompatActivity {
         }
 
         FloatingActionButton fab = findViewById(R.id.floatingActionButton2);
-        editName=findViewById(R.id.titletext);
-        editHotel=findViewById(R.id.hoteltext);
-        editStartDate=findViewById(R.id.starttext);
-        editEndDate=findViewById(R.id.endtext);
+        editName = findViewById(R.id.titletext);
+        editHotel = findViewById(R.id.hoteltext);
+        editStartDate = findViewById(R.id.starttext);
+        editEndDate = findViewById(R.id.endtext);
         vacationID = getIntent().getIntExtra("vacationID", -1);
         name = getIntent().getStringExtra("name");
         hotel = getIntent().getStringExtra("hotel");
@@ -71,16 +72,26 @@ public class VacationDetails extends AppCompatActivity {
         });
         RecyclerView recyclerView = findViewById(R.id.partrecyclerview);
         repository = new Repository(getApplication());
-        final ExcursionAdapter excursionAdapter = new ExcursionAdapter(this);
+        excursionAdapter = new ExcursionAdapter(this);
         recyclerView.setAdapter(excursionAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        List<Excursion> filteredExcursions = new ArrayList<>();
-        for (Excursion e : repository.getAllExcursions()) {
-            if (e.getVacationID() == vacationID) filteredExcursions.add(e);
+
+        loadExcursions();
+    }
+    private void loadExcursions() {
+            List<Excursion> filteredExcursions = new ArrayList<>();
+            for (Excursion e : repository.getAllExcursions()) {
+                if (e.getVacationID() == vacationID) {
+                    filteredExcursions.add(e);
+            }
         }
         excursionAdapter.setExcursions(filteredExcursions);
     }
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadExcursions();
+    }
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_vacationdetails, menu);
         return true;
