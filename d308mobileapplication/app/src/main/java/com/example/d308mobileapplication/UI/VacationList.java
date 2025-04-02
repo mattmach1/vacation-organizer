@@ -52,8 +52,10 @@ private Repository repository;
         recyclerView.setAdapter(vacationAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         vacationAdapter.setVacations(allVacations);
-        //System.out.println(getIntent().getStringExtra("test"));
+
     }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_vacation_list, menu);
