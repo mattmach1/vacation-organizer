@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -115,7 +116,25 @@ public class VacationDetails extends AppCompatActivity {
                 repository.update(vacation);
                 this.finish();
             }
+            return true;
         }
-        return true;
+        if (item.getItemId() == R.id.vacationdelete) {
+            List<Excursion> associatedExcursions = repository.getAssociatedExcursions(vacationID);
+            if (associatedExcursions != null && !associatedExcursions.isEmpty()) {
+                Toast.makeText(this, "Cannot delete vacation because there are excursions associated with it.", Toast.LENGTH_LONG).show();
+            } else {
+                Vacation vacation = new Vacation(vacationID,
+                        editName.getText().toString(),
+                        editHotel.getText().toString(),
+                        editStartDate.getText().toString(),
+                        editEndDate.getText().toString());
+                repository.delete(vacation);
+                Toast.makeText(this, "Vacation deleted", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+             return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
+
 }
