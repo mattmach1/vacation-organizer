@@ -3,6 +3,7 @@ package com.example.d308mobileapplication.UI;
 import static android.app.PendingIntent.FLAG_IMMUTABLE;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -46,6 +48,8 @@ public class ExcursionDetails extends AppCompatActivity {
     TextView editNotifyDate;
     DatePickerDialog.OnDateSetListener startNotifyDate;
     final Calendar myCalendarStart = Calendar.getInstance();
+    String vacationStartDate;
+    String vacationEndDate;
 
 
     @Override
@@ -66,8 +70,14 @@ public class ExcursionDetails extends AppCompatActivity {
         editName.setText(name);
         editDate.setText(date);
 
-//        String myFormat = "MM/dd/yy";
-//        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        Vacation vacation = repository.getVacationByID(vacationID);
+        if (vacation != null) {
+            vacationStartDate = vacation.getStartDate();
+            vacationEndDate = vacation.getEndDate();
+        }
+
+
+
 
 //        editNotifyDate.setOnClickListener(new View.OnClickListener() {
 //
@@ -96,6 +106,36 @@ public class ExcursionDetails extends AppCompatActivity {
             }
         };
     }
+    private boolean validateExcursionDateFormat(String date) {
+        String myFormat = "MM/dd/yy";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        sdf.setLenient(false);
+        try {
+            Date excursionDate = sdf.parse(date);
+        } catch (ParseException e) {
+            return false;
+        }
+        return true;
+    }
+    private boolean validateExcursionDate(String date, String vacationStartDate, String vacationEndDate) {
+        String myFormat = "MM/dd/yy";
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        sdf.setLenient(false);
+        try {
+            Date excursionDate = sdf.parse(date);
+            Date vacationStartDateFormatted = sdf.parse(vacationStartDate);
+            Date vacationEndDateFormatted = sdf.parse(vacationEndDate);
+
+            if (excursionDate.before(vacationStartDateFormatted) || excursionDate.after(vacationEndDateFormatted)) {
+                return false;
+            }
+        } catch (ParseException e) {
+            return false;
+        }
+        return true;
+    }
+
+
     private void updateLabelStart() {
         String myFormat = "MM/dd/yy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
@@ -115,6 +155,25 @@ public class ExcursionDetails extends AppCompatActivity {
             return true;
         }
         if (item.getItemId() == R.id.excursionsave) {
+
+
+            String excursionDateStr = editDate.getText().toString();
+            if (!validateExcursionDateFormat(excursionDateStr)) {
+                Toast.makeText(this, "Excursion date must be in MM/dd/yy format", Toast.LENGTH_LONG).show();
+                return true;
+            }
+
+
+            if(vacationStartDate != null && vacationEndDate != null) {
+                if (!validateExcursionDate(excursionDateStr,vacationStartDate,vacationEndDate)) {
+                    Toast.makeText(this, "Excursion date must be within the vacation start and end dates", Toast.LENGTH_LONG).show();
+                    return true;
+                }
+            } else {
+                Toast.makeText(this, "Vacation dates are not provided for validation. Please first enter vacation start and end dates.", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+
             Excursion excursion;
             if (excursionID == -1) {
                 if (repository.getAllExcursions().size() == 0) excursionID = 1;
@@ -128,6 +187,25 @@ public class ExcursionDetails extends AppCompatActivity {
                 repository.update(excursion);
                 this.finish();
             }
+            return true;
+        }
+        if (item.getItemId() == R.id.excursiondelete) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Delete Excursion")
+                    .setMessage("Are you sure you want to delete this excursion?")
+                    .setPositiveButton("Delete", (dialog, which) -> {
+                        Excursion excursion = new Excursion(
+                                excursionID,
+                                editName.getText().toString(),
+                                editDate.getText().toString(),
+                                vacationID
+                        );
+                        repository.delete(excursion);
+                        Toast.makeText(ExcursionDetails.this, "Excursion deleted", Toast.LENGTH_SHORT).show();
+                        finish();
+                    })
+                    .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                    .show();
             return true;
         }
 //        if (item.getItemId() == R.id.share) {

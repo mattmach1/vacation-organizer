@@ -128,6 +128,18 @@ public class Repository {
             e.printStackTrace();
         }
     }
+    private Vacation mVacation;
+    public Vacation getVacationByID(int vacationID) {
+        databaseExecutor.execute(()->{
+            mVacation = mVacationDAO.getVacationByID(vacationID);
+        });
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return mVacation;
+    }
 
 
 }

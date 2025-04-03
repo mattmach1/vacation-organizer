@@ -2,7 +2,6 @@ package com.example.d308mobileapplication.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,9 +9,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,8 +24,8 @@ import java.util.List;
 public class VacationDetails extends AppCompatActivity {
     String name;
     String hotel;
-    String startDate;
-    String endDate;
+    String vacationStartDate;
+    String vacationEndDate;
     int vacationID;
     EditText editName;
     EditText editHotel;
@@ -56,18 +52,20 @@ public class VacationDetails extends AppCompatActivity {
         vacationID = getIntent().getIntExtra("vacationID", -1);
         name = getIntent().getStringExtra("name");
         hotel = getIntent().getStringExtra("hotel");
-        startDate = getIntent().getStringExtra("start date");
-        endDate = getIntent().getStringExtra("end date");
+        vacationStartDate = getIntent().getStringExtra("vacationStartDate");
+        vacationEndDate = getIntent().getStringExtra("vacationEndDate");
 
         editName.setText(name);
         editHotel.setText(hotel);
-        editStartDate.setText(startDate);
-        editEndDate.setText(endDate);
+        editStartDate.setText(vacationStartDate);
+        editEndDate.setText(vacationEndDate);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(VacationDetails.this, ExcursionDetails.class);
                 intent.putExtra("vacationID", vacationID);
+                intent.putExtra("vacationStartDate", editStartDate.getText().toString());
+                intent.putExtra("vacationEndDate", editEndDate.getText().toString());
                 startActivity(intent);
             }
         });
