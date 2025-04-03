@@ -79,32 +79,16 @@ public class ExcursionDetails extends AppCompatActivity {
 
 
 
-//        editNotifyDate.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                Date notifyDate;
-//                String info = editNotifyDate.getText().toString();
-//                if(info.equals(""))info="04/10/25";
-//                try{
-//                    myCalendarStart.setTime(sdf.parse(info));
-//                } catch (ParseException e) {
-//                    e.printStackTrace();
-//                }
-//                new DatePickerDialog(ExcursionDetails.this, startNotifyDate, myCalendarStart
-//                        .get(Calendar.YEAR), myCalendarStart.get(Calendar.MONTH),
-//                        myCalendarStart.get(Calendar.DAY_OF_MONTH)).show();
-//            }
-//        });
-        startNotifyDate = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                myCalendarStart.set(Calendar.YEAR, year);
-                myCalendarStart.set(Calendar.MONTH, month);
-                myCalendarStart.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-            }
-        };
+//        startNotifyDate = new DatePickerDialog.OnDateSetListener() {
+//            @Override
+//            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+//                myCalendarStart.set(Calendar.YEAR, year);
+//                myCalendarStart.set(Calendar.MONTH, month);
+//                myCalendarStart.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+//
+//            }
+//        };
     }
     private boolean validateExcursionDateFormat(String date) {
         String myFormat = "MM/dd/yy";
@@ -126,6 +110,7 @@ public class ExcursionDetails extends AppCompatActivity {
             Date vacationStartDateFormatted = sdf.parse(vacationStartDate);
             Date vacationEndDateFormatted = sdf.parse(vacationEndDate);
 
+            assert excursionDate != null;
             if (excursionDate.before(vacationStartDateFormatted) || excursionDate.after(vacationEndDateFormatted)) {
                 return false;
             }
@@ -136,12 +121,12 @@ public class ExcursionDetails extends AppCompatActivity {
     }
 
 
-    private void updateLabelStart() {
-        String myFormat = "MM/dd/yy";
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
-        editNotifyDate.setText(sdf.format(myCalendarStart.getTime()));
-    }
+//    private void updateLabelStart() {
+//        String myFormat = "MM/dd/yy";
+//        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+//
+//        editNotifyDate.setText(sdf.format(myCalendarStart.getTime()));
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -208,18 +193,9 @@ public class ExcursionDetails extends AppCompatActivity {
                     .show();
             return true;
         }
-//        if (item.getItemId() == R.id.share) {
-//            Intent sentIntent = new Intent();
-//            sentIntent.setAction(Intent.ACTION_SEND);
-//            sentIntent.putExtra(Intent.EXTRA_TEXT, "You are scheduled for "+ editName.getText().toString()+" on "+ editDate.getText().toString());
-//            sentIntent.putExtra(Intent.EXTRA_TITLE, "Excursion Reminder");
-//            sentIntent.setType("text/plain");
-//            Intent shareIntent=Intent.createChooser(sentIntent, null);
-//            startActivity(shareIntent);
-//            return true;
-//        }
+
         if (item.getItemId() == R.id.excursionnotification) {
-            String dateFromScreen = date;
+            String dateFromScreen = editDate.getText().toString();
             String myFormat = "MM/dd/yy";
             SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
             Date myDate = null;
