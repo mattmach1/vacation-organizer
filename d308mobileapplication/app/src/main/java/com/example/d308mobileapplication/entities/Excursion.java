@@ -20,6 +20,8 @@ public class Excursion {
     private String excursionTitle;
     private String excursionDate;
     private int vacationID;
+    private String vacationStartDate;
+    private String vacationEndDate;
 
     public int getExcursionID() {
         return excursionID;
@@ -50,6 +52,7 @@ public class Excursion {
         this.excursionTitle = excursionTitle;
         this.excursionDate = excursionDate;
         this.vacationID= vacationID;
+
     }
 
     public int getVacationID() {
@@ -58,4 +61,9 @@ public class Excursion {
     public void setVacationID(int vacationID){
         this.vacationID = vacationID;
     }
+    public void setVacationStartDate(String vacationStartDate) { this.vacationStartDate = vacationStartDate; }
+    public String getVacationStartDate() { return vacationStartDate; }
+    public void setVacationEndDate(String vacationEndDate) { this.vacationEndDate = vacationEndDate; }
+    public String getVacationEndDate() { return vacationEndDate; }
 }
+
