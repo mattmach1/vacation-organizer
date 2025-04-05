@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -64,6 +65,7 @@ public class VacationDetails extends AppCompatActivity {
         vacationStartDate = getIntent().getStringExtra("vacationStartDate");
         vacationEndDate = getIntent().getStringExtra("vacationEndDate");
 
+
         editName.setText(name);
         editHotel.setText(hotel);
         editStartDate.setText(vacationStartDate);
@@ -78,23 +80,34 @@ public class VacationDetails extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        RecyclerView recyclerView = findViewById(R.id.partrecyclerview);
-        repository = new Repository(getApplication());
-        excursionAdapter = new ExcursionAdapter(this);
-        recyclerView.setAdapter(excursionAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        loadExcursions();
-    }
-    private void loadExcursions() {
-            List<Excursion> filteredExcursions = new ArrayList<>();
-            for (Excursion e : repository.getAllExcursions()) {
-                if (e.getVacationID() == vacationID) {
-                    filteredExcursions.add(e);
+        TextView excursionsTextView = findViewById(R.id.excursionsTextView);
+        excursionsTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(VacationDetails.this, ExcursionList.class);
+                intent.putExtra("vacationID", vacationID);
+                startActivity(intent);
             }
-        }
-        excursionAdapter.setExcursions(filteredExcursions);
+        });
+
+//        RecyclerView recyclerView = findViewById(R.id.partrecyclerview);
+//        repository = new Repository(getApplication());
+//        excursionAdapter = new ExcursionAdapter(this);
+//        recyclerView.setAdapter(excursionAdapter);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//
+//        loadExcursions();
     }
+//    private void loadExcursions() {
+//            List<Excursion> filteredExcursions = new ArrayList<>();
+//            for (Excursion e : repository.getAllExcursions()) {
+//                if (e.getVacationID() == vacationID) {
+//                    filteredExcursions.add(e);
+//            }
+//        }
+//        excursionAdapter.setExcursions(filteredExcursions);
+//    }
 
     private boolean validateVacationDateFormat(String vacationStartDate, String vacationEndDate) {
         String myFormat = "MM/dd/yy";
@@ -127,11 +140,11 @@ public class VacationDetails extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadExcursions();
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        loadExcursions();
+//    }
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_vacationdetails, menu);
         return true;
