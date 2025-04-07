@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,22 +56,28 @@ public class VacationDetails extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        FloatingActionButton fab = findViewById(R.id.floatingActionButton2);
+        // Initialize views
+        repository = new Repository(getApplication());
+        FloatingActionButton fab = findViewById(R.id.floatingActionButton);
         editName = findViewById(R.id.titletext);
         editHotel = findViewById(R.id.hoteltext);
         editStartDate = findViewById(R.id.starttext);
         editEndDate = findViewById(R.id.endtext);
+
+
         vacationID = getIntent().getIntExtra("vacationID", -1);
+        Log.d("VacationDetails", "Received vacationID: " + vacationID);
         name = getIntent().getStringExtra("name");
         hotel = getIntent().getStringExtra("hotel");
         vacationStartDate = getIntent().getStringExtra("vacationStartDate");
         vacationEndDate = getIntent().getStringExtra("vacationEndDate");
 
-
         editName.setText(name);
         editHotel.setText(hotel);
         editStartDate.setText(vacationStartDate);
         editEndDate.setText(vacationEndDate);
+
+        // Button to go to ExcursionDetails for adding a new excursion
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,6 +89,7 @@ public class VacationDetails extends AppCompatActivity {
             }
         });
 
+        // View all associated excursions
         TextView excursionsTextView = findViewById(R.id.excursionsTextView);
         excursionsTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,22 +100,43 @@ public class VacationDetails extends AppCompatActivity {
             }
         });
 
-//        RecyclerView recyclerView = findViewById(R.id.partrecyclerview);
-//        repository = new Repository(getApplication());
-//        excursionAdapter = new ExcursionAdapter(this);
-//        recyclerView.setAdapter(excursionAdapter);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//
-//        loadExcursions();
     }
-//    private void loadExcursions() {
-//            List<Excursion> filteredExcursions = new ArrayList<>();
-//            for (Excursion e : repository.getAllExcursions()) {
-//                if (e.getVacationID() == vacationID) {
-//                    filteredExcursions.add(e);
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("name", name);
+        outState.putString("hotel", hotel);
+        outState.putString("vacationStartDate", vacationStartDate);
+        outState.putString("vacationEndDate", vacationEndDate);
+        outState.putInt("vacationID", vacationID);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState != null) {
+            name = savedInstanceState.getString("name");
+            hotel = savedInstanceState.getString("hotel");
+            vacationStartDate = savedInstanceState.getString("vacationStartDate");
+            vacationEndDate = savedInstanceState.getString("vacationEndDate");
+            vacationID = savedInstanceState.getInt("vacationID");
+        }
+    }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        repository.getVacationByIDLive(vacationID).observe(this, new Observer<Vacation>() {
+//            @Override
+//            public void onChanged(Vacation vacation) {
+//                if (vacation != null) {
+//                    editName.setText(vacation.getTitle());
+//                    editHotel.setText(vacation.getHotel());
+//                    editStartDate.setText(vacation.getStartDate());
+//                    editEndDate.setText(vacation.getEndDate());
+//                }
 //            }
-//        }
-//        excursionAdapter.setExcursions(filteredExcursions);
+//        });
 //    }
 
     private boolean validateVacationDateFormat(String vacationStartDate, String vacationEndDate) {
@@ -140,11 +170,6 @@ public class VacationDetails extends AppCompatActivity {
         return true;
     }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        loadExcursions();
-//    }
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_vacationdetails, menu);
         return true;

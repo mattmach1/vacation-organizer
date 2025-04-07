@@ -3,6 +3,7 @@ package com.example.d308mobileapplication.UI;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
                 public void onClick(View view) {
                     int position=getAdapterPosition();
                     final Vacation current=mVacations.get(position);
+                    Log.d("VacationAdapter", "Vacation ID: " + current.getVacationID());
                     Intent intent=new Intent(context,VacationDetails.class);
                     intent.putExtra("vacationID", current.getVacationID());
                     intent.putExtra("name", current.getTitle());

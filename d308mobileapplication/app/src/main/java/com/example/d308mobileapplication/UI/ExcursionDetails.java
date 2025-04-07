@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -70,25 +71,17 @@ public class ExcursionDetails extends AppCompatActivity {
         editName.setText(name);
         editDate.setText(date);
 
-        Vacation vacation = repository.getVacationByID(vacationID);
-        if (vacation != null) {
-            vacationStartDate = vacation.getStartDate();
-            vacationEndDate = vacation.getEndDate();
-        }
+        repository.getVacationByIDLive(vacationID).observe(this, new Observer<Vacation>() {
+            @Override
+            public void onChanged(Vacation vacation) {
+                if (vacation != null) {
+                    vacationStartDate = vacation.getStartDate();
+                    vacationEndDate = vacation.getEndDate();
 
+                }
+            }
+        });
 
-
-
-
-//        startNotifyDate = new DatePickerDialog.OnDateSetListener() {
-//            @Override
-//            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-//                myCalendarStart.set(Calendar.YEAR, year);
-//                myCalendarStart.set(Calendar.MONTH, month);
-//                myCalendarStart.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-//
-//            }
-//        };
     }
     private boolean validateExcursionDateFormat(String date) {
         String myFormat = "MM/dd/yy";

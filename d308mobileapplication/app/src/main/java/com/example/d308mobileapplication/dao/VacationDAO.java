@@ -1,5 +1,6 @@
 package com.example.d308mobileapplication.dao;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -26,6 +27,6 @@ public interface VacationDAO {
     List<Vacation> getAllVacations();
 
     @Query("SELECT * FROM VACATIONS WHERE vacationID =:vacationID")
-    Vacation getVacationByID(int vacationID);
+    LiveData<Vacation> getVacationByIDLive(int vacationID);
 
 }

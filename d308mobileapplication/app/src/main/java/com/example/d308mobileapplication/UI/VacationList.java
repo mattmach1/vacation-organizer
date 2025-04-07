@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +26,8 @@ import java.util.List;
 
 public class VacationList extends AppCompatActivity {
 private Repository repository;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,16 +53,13 @@ private Repository repository;
         List<Vacation> allVacations=repository.getmAllVacations();
         final VacationAdapter vacationAdapter=new VacationAdapter(this);
         recyclerView.setAdapter(vacationAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
         vacationAdapter.setVacations(allVacations);
 
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_vacation_list, menu);
-        return true;
     }
 
     @Override
@@ -71,22 +71,5 @@ private Repository repository;
         recyclerView.setAdapter(vacationAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         vacationAdapter.setVacations(allVacations);
-    }
-
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId()==R.id.sample) {
-            repository=new Repository(getApplication());
-            //Toast.makeText(VacationList.this, "put in sample data", Toast.LENGTH_LONG);
-            Vacation vacation=new Vacation(0, "Hawaii trip", "Marriott", "04/15/25", "04/28/25");
-            repository.insert(vacation);
-
-            return true;
-        }
-        if(item.getItemId()==android.R.id.home) {
-            this.finish();
-            return true;
-        }
-        return true;
     }
 }

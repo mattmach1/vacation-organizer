@@ -2,6 +2,8 @@ package com.example.d308mobileapplication.database;
 
 import android.app.Application;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.d308mobileapplication.dao.ExcursionDAO;
 import com.example.d308mobileapplication.dao.VacationDAO;
 import com.example.d308mobileapplication.entities.Excursion;
@@ -129,16 +131,8 @@ public class Repository {
         }
     }
     private Vacation mVacation;
-    public Vacation getVacationByID(int vacationID) {
-        databaseExecutor.execute(()->{
-            mVacation = mVacationDAO.getVacationByID(vacationID);
-        });
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return mVacation;
+    public LiveData<Vacation> getVacationByIDLive(int vacationID) {
+        return mVacationDAO.getVacationByIDLive(vacationID);
     }
 
 

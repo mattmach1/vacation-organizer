@@ -3,12 +3,14 @@ package com.example.d308mobileapplication.UI;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.d308mobileapplication.R;
 import com.example.d308mobileapplication.database.Repository;
 import com.example.d308mobileapplication.entities.Excursion;
+import com.example.d308mobileapplication.entities.Vacation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +31,22 @@ public class ExcursionList extends AppCompatActivity {
 
         int vacationID = getIntent().getIntExtra("vacationID", -1);
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        ExcursionAdapter excursionAdapter = new ExcursionAdapter(this);
-        recyclerView.setAdapter(excursionAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        List<Excursion> associatedExcursions;
+
+
+
+        RecyclerView recyclerView=findViewById(R.id.recyclerview);
+        repository=new Repository(getApplication());
+        List<Excursion> associatedExcursions=repository.getAssociatedExcursions(vacationID);
+        final ExcursionAdapter excursionAdapter=new ExcursionAdapter(this);
+        recyclerView.setAdapter(excursionAdapter);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        excursionAdapter.setExcursions(associatedExcursions);
+
         if (vacationID != -1) {
             associatedExcursions = repository.getAssociatedExcursions(vacationID);
         } else {
