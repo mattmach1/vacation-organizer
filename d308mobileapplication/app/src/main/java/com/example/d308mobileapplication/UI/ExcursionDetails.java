@@ -147,9 +147,6 @@ public class ExcursionDetails extends AppCompatActivity {
                     Toast.makeText(this, "Excursion date must be within the vacation start and end dates", Toast.LENGTH_LONG).show();
                     return true;
                 }
-            } else {
-                Toast.makeText(this, "Vacation dates are not provided for validation. Please first enter vacation start and end dates.", Toast.LENGTH_SHORT).show();
-                return true;
             }
 
             Excursion excursion;

@@ -1,6 +1,7 @@
 package com.example.d308mobileapplication.UI;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -18,7 +19,6 @@ import java.util.List;
 public class ExcursionList extends AppCompatActivity {
 
     private Repository repository;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,24 +27,23 @@ public class ExcursionList extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        repository = new Repository((getApplication()));
 
+        repository = new Repository((getApplication()));
         int vacationID = getIntent().getIntExtra("vacationID", -1);
 
 
-
-
-
         RecyclerView recyclerView=findViewById(R.id.recyclerview);
-        repository=new Repository(getApplication());
-        List<Excursion> associatedExcursions=repository.getAssociatedExcursions(vacationID);
-        final ExcursionAdapter excursionAdapter=new ExcursionAdapter(this);
-        recyclerView.setAdapter(excursionAdapter);
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
+
+        //repository=new Repository(getApplication());
+        List<Excursion> associatedExcursions=repository.getAssociatedExcursions(vacationID);
+        final ExcursionAdapter excursionAdapter=new ExcursionAdapter(this);
+        recyclerView.setAdapter(excursionAdapter);
+
+
         excursionAdapter.setExcursions(associatedExcursions);
 
         if (vacationID != -1) {
@@ -54,5 +53,12 @@ public class ExcursionList extends AppCompatActivity {
         }
         excursionAdapter.setExcursions(associatedExcursions);
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
