@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,16 +17,62 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.d308mobileapplication.R;
 import com.example.d308mobileapplication.entities.Vacation;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.VacationViewHolder> {
-    private List<Vacation> mVacations;
+public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.VacationViewHolder> implements Filterable {
+    private List<Vacation> mVacations = new ArrayList<>();
+    private List<Vacation> mVacationsFull = new ArrayList<>();
     private final Context context;
     private final LayoutInflater mInflater;
     public VacationAdapter(Context context){
         mInflater= LayoutInflater.from(context);
         this.context=context;
+        mVacations = new ArrayList<>();
+        mVacationsFull = new ArrayList<>();
     }
+
+    public void setVacations(List<Vacation> vacations) {
+        mVacations.clear();
+        mVacations.addAll(vacations);
+
+        mVacationsFull.clear();
+        mVacationsFull.addAll(vacations);
+
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return vacationFilter;
+    }
+
+    private final Filter vacationFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Vacation> filtered = new ArrayList<>();
+            if (constraint == null || constraint.length() == 0) {
+                filtered.addAll(mVacationsFull);
+            } else {
+                String query = constraint.toString().toLowerCase().trim();
+                for (Vacation v : mVacationsFull) {
+                    if (v.getTitle().toLowerCase().contains(query)) {
+                        filtered.add(v);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filtered;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            mVacations.clear();
+            mVacations.addAll((List<Vacation>) results.values);
+            notifyDataSetChanged();
+        }
+    };
     public class VacationViewHolder extends RecyclerView.ViewHolder {
         private final TextView vacationItemView;
         public VacationViewHolder(@NonNull View itemView) {
@@ -75,9 +123,4 @@ public class VacationAdapter extends RecyclerView.Adapter<VacationAdapter.Vacati
         }
         else return 0;
     }
-    public void setVacations(List<Vacation> vacations){
-        mVacations=vacations;
-        notifyDataSetChanged();
-    }
-
 }
