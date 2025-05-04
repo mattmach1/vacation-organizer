@@ -49,6 +49,9 @@
             android:exported="false"
             android:label="Excursion Details"
             android:parentActivityName=".UI.ExcursionList" />
+        <activity
+            android:name=".UI.LogReportActivity"
+            android:label="Log Reports"/>
 
     </application>
 </manifest>

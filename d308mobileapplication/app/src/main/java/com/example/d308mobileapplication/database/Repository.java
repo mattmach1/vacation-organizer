@@ -1,25 +1,37 @@
 package com.example.d308mobileapplication.database;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
 import com.example.d308mobileapplication.dao.ExcursionDAO;
+import com.example.d308mobileapplication.dao.LogDAO;
 import com.example.d308mobileapplication.dao.VacationDAO;
 import com.example.d308mobileapplication.entities.Excursion;
+import com.example.d308mobileapplication.entities.LogEntry;
 import com.example.d308mobileapplication.entities.Vacation;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class Repository {
     private VacationDAO mVacationDAO;
     private ExcursionDAO mExcursionDAO;
+    private LogDAO mLogDAO;
 
     private List<Vacation> mAllVacations;
     private List<Excursion> mAllExcursions;
+    private Vacation mVacation;
+    private List<LogEntry> mAllLogs;
 
+    private String now() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+    }
     private static int NUMBER_OF_THREADS=4;
     static final ExecutorService databaseExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
@@ -27,6 +39,7 @@ public class Repository {
         VacationDatabaseBuilder db=VacationDatabaseBuilder.getDatabase(application);
         mExcursionDAO=db.excursionDAO();
         mVacationDAO= db.vacationDAO();
+        mLogDAO = db.logDAO();
     }
     public List<Excursion>getAllExcursions(){
         databaseExecutor.execute(()->{
@@ -101,6 +114,10 @@ public class Repository {
     public void insert(Vacation vacation) {
         databaseExecutor.execute(()-> {
             mVacationDAO.insert(vacation);
+
+            String ts = now();
+            LogEntry log = new LogEntry(0, "Created vacation: \"" + vacation.getTitle() + "\"", ts);
+            mLogDAO.insert(log);
         });
         try {
             Thread.sleep(1000);
@@ -112,6 +129,10 @@ public class Repository {
     public void update(Vacation vacation){
         databaseExecutor.execute(()->{
             mVacationDAO.update(vacation);
+
+            String ts = now();
+            LogEntry log = new LogEntry(0, "Updated vacation: \"" + vacation.getTitle() + "\"", ts);
+            mLogDAO.insert(log);
         });
         try {
             Thread.sleep(1000);
@@ -123,6 +144,10 @@ public class Repository {
     public void delete(Vacation vacation){
         databaseExecutor.execute(()->{
             mVacationDAO.delete(vacation);
+
+            String ts = now();
+            LogEntry log = new LogEntry(0, "Deleted vacation: \"" + vacation.getTitle() + "\"", ts);
+            mLogDAO.insert(log);
         });
         try {
             Thread.sleep(1000);
@@ -130,11 +155,18 @@ public class Repository {
             e.printStackTrace();
         }
     }
-    private Vacation mVacation;
+
     public LiveData<Vacation> getVacationByIDLive(int vacationID) {
         return mVacationDAO.getVacationByIDLive(vacationID);
     }
 
+    public LiveData<List<LogEntry>> getAllLogsLive() {
+        return mLogDAO.getAllLogsLive();
+    }
+
+    public void insert(LogEntry logEntry) {
+        databaseExecutor.execute(() -> mLogDAO.insert(logEntry));
+    }
 
 }
 
