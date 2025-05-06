@@ -1,6 +1,7 @@
 package com.example.d308mobileapplication.UI;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
+import androidx.core.content.FileProvider;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -23,6 +25,9 @@ import com.example.d308mobileapplication.entities.Excursion;
 import com.example.d308mobileapplication.entities.Vacation;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,6 +109,10 @@ private VacationAdapter adapter;
         int id = item.getItemId();
         if (id == R.id.action_log_reports) {
             startActivity(new Intent(this, LogReportActivity.class));
+            return true;
+        }
+        if(id == R.id.action_generate_report) {
+            startActivity(new Intent(this, ReportActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

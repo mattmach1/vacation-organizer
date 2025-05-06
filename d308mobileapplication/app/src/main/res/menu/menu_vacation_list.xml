@@ -13,4 +13,10 @@
         android:id="@+id/action_log_reports"
         android:title="Log Reports"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_generate_report"
+        android:title="Generate Report"
+        app:showAsAction="never"/>
+
 </menu>

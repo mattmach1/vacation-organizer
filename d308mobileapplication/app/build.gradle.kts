@@ -37,12 +37,16 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.security.crypto)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
 
     // Room components
     implementation("androidx.room:room-runtime:${rootProject.extra.get("roomVersion")}")
     annotationProcessor("androidx.room:room-compiler:${rootProject.extra.get("roomVersion")}")
     androidTestImplementation("androidx.room:room-testing:${rootProject.extra.get("roomVersion")}")
+    implementation("androidx.security:security-crypto:1.1.0-alpha03")
+    implementation("net.zetetic:android-database-sqlcipher:4.5.0")
 }
