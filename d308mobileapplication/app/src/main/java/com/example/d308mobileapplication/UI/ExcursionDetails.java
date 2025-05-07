@@ -83,7 +83,7 @@ public class ExcursionDetails extends AppCompatActivity {
         });
 
     }
-    private boolean validateExcursionDateFormat(String date) {
+    public boolean validateExcursionDateFormat(String date) {
         String myFormat = "MM/dd/yy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         sdf.setLenient(false);
@@ -94,7 +94,7 @@ public class ExcursionDetails extends AppCompatActivity {
         }
         return true;
     }
-    private boolean validateExcursionDate(String date, String vacationStartDate, String vacationEndDate) {
+    public boolean validateExcursionDate(String date, String vacationStartDate, String vacationEndDate) {
         String myFormat = "MM/dd/yy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         sdf.setLenient(false);
@@ -112,14 +112,6 @@ public class ExcursionDetails extends AppCompatActivity {
         }
         return true;
     }
-
-
-//    private void updateLabelStart() {
-//        String myFormat = "MM/dd/yy";
-//        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-//
-//        editNotifyDate.setText(sdf.format(myCalendarStart.getTime()));
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
