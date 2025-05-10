@@ -1,7 +1,9 @@
 package com.example.d308mobileapplication.UI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -23,7 +25,7 @@ public class ExcursionList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_vacation_list);
+        setContentView(R.layout.activity_excursion_list);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -52,6 +54,7 @@ public class ExcursionList extends AppCompatActivity {
             associatedExcursions = repository.getAllExcursions();
         }
         excursionAdapter.setExcursions(associatedExcursions);
+
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
